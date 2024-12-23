@@ -202,3 +202,26 @@ if 'date' in reviews_df.columns:
     plt.show()
 else:
     print("No 'date' column found in the DataFrame.")
+
+# 23. Correlation Heatmap of Numeric Features
+
+# 1. Prepare the Data
+# Convert sentiment to numeric values if it's not already
+sentiment_map = {'positive': 1, 'neutral': 0, 'negative': -1}
+reviews_df['sentiment_numeric'] = reviews_df['sentiment'].map(sentiment_map)
+
+# 2. Select relevant numeric columns for the correlation matrix
+numeric_cols = ['rating', 'review_length', 'sentiment_numeric']  # Add any other numeric columns
+
+# Ensure the columns are numeric
+numeric_cols = ['score', 'review_length', 'sentiment_numeric']
+reviews_df[numeric_cols] = reviews_df[numeric_cols].apply(pd.to_numeric, errors='coerce')
+
+# 3. Compute the correlation matrix
+corr_matrix = reviews_df[numeric_cols].corr()
+
+# 4. Visualize the correlation matrix using seaborn's heatmap
+plt.figure(figsize=(8, 6))
+sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', fmt=".2f", linewidths=0.5)
+plt.title('Correlation Heatmap of Numeric Features')
+plt.show()
